@@ -93,11 +93,14 @@
 (function(){
   var SCORE = 71;        // <-- the dynamic value. Change this one number.
   var DUR   = 1800;      // fill + count duration (ms)
+  var DELAY = 1200;      // wait before the animation starts (ms)
 
   var reveal = document.getElementById('revealStroke');
   var num    = document.getElementById('num');
   var len    = reveal.getTotalLength();
   reveal.style.strokeDasharray = len;
+  reveal.style.strokeDashoffset = len;   // start empty
+  num.textContent = '0';                  // start at zero
 
   function play(){
     reveal.style.transition = 'none';
@@ -117,7 +120,7 @@
     requestAnimationFrame(step);
   }
 
-  play();
+  setTimeout(play, DELAY);
 })();
 </script>
 </body>
