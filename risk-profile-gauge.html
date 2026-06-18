@@ -8,8 +8,6 @@
   html,body{margin:0;background:transparent;}
   .gwrap{width:100%;max-width:385px;margin:0 auto;}
   #revealStroke{transition: stroke-dashoffset 1.8s cubic-bezier(.16,.84,.44,1);}
-  #replay{margin-top:6px;font:500 13px system-ui,sans-serif;background:transparent;border:1px solid #c9ccd1;border-radius:8px;padding:7px 14px;cursor:pointer;color:#2a2a2a;}
-  #replay:active{transform:scale(.98);}
 </style>
 </head>
 <body>
@@ -90,7 +88,6 @@
 </defs>
 <text id="num" x="186" y="170" text-anchor="middle" fill="#304A78" font-family="Roboto Slab, Georgia, serif" font-weight="700" font-size="76">0</text></svg>
 
-<div style="text-align:center"><button id="replay">Replay</button></div>
 </div>
 <script>
 (function(){
@@ -120,8 +117,6 @@
     requestAnimationFrame(step);
   }
 
-  var rb = document.getElementById('replay');
-  if(rb) rb.addEventListener('click', play);
   play();
 })();
 </script>
