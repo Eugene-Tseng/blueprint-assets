@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500;600&family=Source+Sans+3:wght@400&display=swap');
+  :root{
+    --slab: 'Roboto Slab', Georgia, serif;
+    --sans: 'Source Sans 3', system-ui, sans-serif;
+    --name: #444444;
+    --blue: #0075BC;
+    --gray: #5D5D5D;
+    --badge-bg: #F2F7FC;
+    --divider: #D1D1D1;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; height:100%; background:transparent; }
+  #scroll{
+    height:100%; overflow-y:auto; padding-bottom:28px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
+    scrollbar-width: thin; scrollbar-color: #C7CED6 transparent;
+  }
+  #scroll::-webkit-scrollbar{ width:6px; }
+  #scroll::-webkit-scrollbar-thumb{ background:#C7CED6; border-radius:3px; }
+  #grid{ display:flex; flex-wrap:wrap; gap:16px; width:1170px; opacity:0; transition:opacity .4s ease; }
+  #grid.in{ opacity:1; }
+
+  .card{
+    position:relative; flex:none; width:379px; height:174px;
+    background:#fff; border-radius:8px;
+    box-shadow:0 1px 2px rgba(16,24,40,.06);   /* subtle lift; remove for the SVG's flat look */
+  }
+  .name{ position:absolute; left:16px; top:13px; font-family:var(--slab); font-weight:500; font-size:20px; line-height:1; color:var(--name); }
+  .badge{
+    position:absolute; right:16px; top:8px; width:37px; height:32px;
+    background:var(--badge-bg); border-radius:4px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--slab); font-weight:600; font-size:16px; color:var(--name);
+  }
+  .ambest{ position:absolute; right:16px; top:44px; font-family:var(--sans); font-weight:400; font-size:16px; line-height:1; color:var(--gray); }
+  .fig{ position:absolute; left:16px; top:58px; font-family:var(--slab); font-weight:500; font-size:30px; line-height:1; color:var(--blue); }
+  .figlabel{ position:absolute; left:16px; top:97px; font-family:var(--sans); font-weight:400; font-size:14px; line-height:1; letter-spacing:.03em; text-transform:uppercase; color:var(--gray); }
+  .divider{ position:absolute; left:16px; right:16px; top:126px; height:1px; background:var(--divider); }
+  .global{ position:absolute; left:16px; top:140px; font-family:var(--sans); font-weight:400; font-size:16px; line-height:1; color:var(--gray); }
+</style>
+</head>
+<body>
+<div id="scroll"><div id="grid"></div></div>
+<script>
+(function(){
+  // ---- DYNAMIC DATA -----------------------------------------------------
+  // Edit this array to change cards. Later this can be fed from a data
+  // source: fetch('carriers.json').then(r=>r.json()).then(d=>{CARRIERS=d; render();});
+  var CARRIERS = [
+    { name: "Lloyd's of London", rating: "A+",  usPremium: "$377M", globalPremium: "$571M" },
+    { name: "Chubb Limited",     rating: "A+",  usPremium: "$255M", globalPremium: "$331M" },
+    { name: "Travelers Group",   rating: "A++", usPremium: "$192M", globalPremium: "$224M" },
+    { name: "AIG",               rating: "A++", usPremium: "$112M", globalPremium: "$168M" },
+    { name: "Zurich Financial",  rating: "A+",  usPremium: "$94M",  globalPremium: "$140M" },
+    { name: "Fairfax Holdings",  rating: "A+",  usPremium: "$86M",  globalPremium: "$121M" },
+    { name: "Liberty Mutual",    rating: "A",   usPremium: "$78M",  globalPremium: "$104M" },
+    { name: "The Hartford",      rating: "A+",  usPremium: "$64M",  globalPremium: "$88M"  },
+    { name: "CNA Financial",     rating: "A",   usPremium: "$51M",  globalPremium: "$67M"  }
+  ];
+  // -----------------------------------------------------------------------
+
+  var grid = document.getElementById('grid');
+
+  function card(c){
+    return '<div class="card">' +
+      '<div class="name">' + c.name + '</div>' +
+      '<div class="badge">' + c.rating + '</div>' +
+      '<div class="ambest">AM Best Rated</div>' +
+      '<div class="fig">' + c.usPremium + '</div>' +
+      '<div class="figlabel">US Industry Premium</div>' +
+      '<div class="divider"></div>' +
+      '<div class="global">Global Premium: ' + c.globalPremium + '</div>' +
+    '</div>';
+  }
+
+  function render(){
+    grid.innerHTML = CARRIERS.map(card).join('');
+    requestAnimationFrame(function(){ grid.classList.add('in'); });
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
