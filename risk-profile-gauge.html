@@ -120,7 +120,13 @@
     requestAnimationFrame(step);
   }
 
-  setTimeout(play, DELAY);
+  // Run on load, and again whenever the parent (Ceros) signals the page is shown.
+  var pending;
+  function schedule(){ clearTimeout(pending); pending = setTimeout(play, DELAY); }
+  window.addEventListener('message', function(e){
+    if (e && e.data === 'blueprint:replay') { schedule(); }
+  });
+  schedule();
 })();
 </script>
 </body>
