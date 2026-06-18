@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  html,body{ margin:0; height:100%; background:transparent; overflow:hidden; }
+  video{ width:100%; height:100%; object-fit:contain; display:block; }
+</style>
+</head>
+<body>
+  <video id="v" autoplay loop muted playsinline>
+    <source src="buildingblue-transparent.webm" type="video/webm">
+  </video>
+  <script>
+    // Restart the build-up from the ground when the deck signals the page is shown.
+    var v = document.getElementById('v');
+    window.addEventListener('message', function(e){
+      if (e && e.data === 'blueprint:replay' && v){ try { v.currentTime = 0; v.play(); } catch(_){} }
+    });
+  </script>
+</body>
+</html>
