@@ -9,11 +9,11 @@
 </style>
 </head>
 <body>
-  <video id="v" autoplay loop muted playsinline>
+  <video id="v" autoplay muted playsinline>
     <source src="buildingblue-transparent.webm" type="video/webm">
   </video>
   <script>
-    // Restart the build-up from the ground when the deck signals the page is shown.
+    // Play once. Restart from the ground each time the deck signals the page is shown.
     var v = document.getElementById('v');
     window.addEventListener('message', function(e){
       if (e && e.data === 'blueprint:replay' && v){ try { v.currentTime = 0; v.play(); } catch(_){} }
