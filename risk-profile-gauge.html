@@ -7,7 +7,6 @@
   @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600;700&display=swap');
   html,body{margin:0;background:transparent;}
   .gwrap{width:100%;max-width:385px;margin:0 auto;}
-  #revealStroke{transition: stroke-dashoffset 1.8s cubic-bezier(.16,.84,.44,1);}
 </style>
 </head>
 <body>
@@ -48,7 +47,7 @@
 <rect width="2.10561" height="10.528" transform="matrix(-0.809017 -0.587785 -0.587785 0.809017 278.409 59.5984)" fill="white"/>
 <rect width="2.10561" height="10.528" transform="matrix(-0.309017 -0.951056 -0.951056 0.309017 328.557 133.007)" fill="white"/>
 <rect width="2.10561" height="10.528" transform="matrix(-0.587785 -0.809017 -0.809017 0.587785 306.592 91.6475)" fill="white"/>
-<defs><mask id="scoreReveal" maskUnits="userSpaceOnUse"><path id="revealStroke" d="M41.08 176.3 A144 144 0 0 1 329.08 176.3" fill="none" stroke="#fff" stroke-width="24" stroke-linecap="butt"/></mask>
+<defs><mask id="scoreReveal" maskUnits="userSpaceOnUse"><path id="revealStroke" d="M41.08 176.3 A144 144 0 0 1 329.08 176.3" fill="none" stroke="#fff" stroke-width="24" stroke-linecap="butt" stroke-dasharray="500" stroke-dashoffset="500"/></mask>
 <linearGradient id="paint0_linear_3430_1151" x1="197.303" y1="159.2" x2="197.875" y2="209.396" gradientUnits="userSpaceOnUse">
 <stop offset="0.0721154" stop-color="#C9E0F4"/>
 <stop offset="1" stop-color="#0075BC"/>
@@ -98,6 +97,7 @@
   var reveal = document.getElementById('revealStroke');
   var num    = document.getElementById('num');
   var len    = reveal.getTotalLength();
+  reveal.style.transition = 'none';
   reveal.style.strokeDasharray = len;
   reveal.style.strokeDashoffset = len;   // start empty
   num.textContent = '0';                  // start at zero
