@@ -67,10 +67,7 @@
     { name: "Travelers Group",   rating: "A++", usPremium: "$192M", globalPremium: "$224M" },
     { name: "AIG",               rating: "A++", usPremium: "$112M", globalPremium: "$168M" },
     { name: "Zurich Financial",  rating: "A+",  usPremium: "$94M",  globalPremium: "$140M" },
-    { name: "Fairfax Holdings",  rating: "A+",  usPremium: "$86M",  globalPremium: "$121M" },
-    { name: "Liberty Mutual",    rating: "A",   usPremium: "$78M",  globalPremium: "$104M" },
-    { name: "The Hartford",      rating: "A+",  usPremium: "$64M",  globalPremium: "$88M"  },
-    { name: "CNA Financial",     rating: "A",   usPremium: "$51M",  globalPremium: "$67M"  }
+    { name: "Fairfax Holdings",  rating: "A+",  usPremium: "$86M",  globalPremium: "$121M" }
   ];
   // ----------------------------------------------------------------------
 
@@ -97,10 +94,13 @@
   }
 
   function layout(){
-    // stage is 2x; its visible footprint is half its height. Add runway so
-    // the last row can scroll up to the top of the visible window.
-    var runway = Math.max(0, scroll.clientHeight - TAIL);
-    sizer.style.height = (stage.offsetHeight * 0.5 + runway) + 'px';
+    // stage is 2x; its visible footprint is half its height.
+    var contentH = stage.offsetHeight * 0.5;
+    // Only add scroll runway when the cards actually overflow the window,
+    // so a grid that already fits doesn't scroll into empty space.
+    var overflow = contentH > scroll.clientHeight + 1;
+    var runway = overflow ? Math.max(0, scroll.clientHeight - TAIL) : 0;
+    sizer.style.height = (contentH + runway) + 'px';
   }
 
   function render(){
