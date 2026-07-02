@@ -58,17 +58,16 @@
 <div id="scroll"><div id="sizer"><div id="stage"><div id="grid"></div></div></div></div>
 <script>
 (function(){
-  // ---- DYNAMIC DATA -----------------------------------------------------
-  // Edit this array to change cards. Later this can be fed from a data
-  // source: fetch('carriers.json').then(r=>r.json()).then(d=>{CARRIERS=d; render();});
-  var CARRIERS = [
-    { name: "Lloyd's of London", rating: "A+",  usPremium: "$377M", globalPremium: "$571M" },
-    { name: "Chubb Limited",     rating: "A+",  usPremium: "$255M", globalPremium: "$331M" },
-    { name: "Travelers Group",   rating: "A++", usPremium: "$192M", globalPremium: "$224M" },
-    { name: "AIG",               rating: "A++", usPremium: "$112M", globalPremium: "$168M" },
-    { name: "Zurich Financial",  rating: "A+",  usPremium: "$94M",  globalPremium: "$140M" },
-    { name: "Fairfax Holdings",  rating: "A+",  usPremium: "$86M",  globalPremium: "$121M" }
-  ];
+
+ var CARRIERS = [];
+  window.addEventListener("message", (event) => {
+ // Ensure the message type is correct
+ if (event.data && event.data.type === "LOAD_DATA") {
+ const data = event.data.payload; // Extract the payload
+CARRIERS = data.page5.cards;
+ console.log("Data received via event:", data);
+}
+});
   // ----------------------------------------------------------------------
 
   // How much of a row stays visible at the very top when fully scrolled.
