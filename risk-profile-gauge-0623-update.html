@@ -89,7 +89,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:transparent;overf
 </div>
 <script>
 (function(){
-var SCORE = 71; // <-- the dynamic value. Change this one number.
+var SCORE = 0; // <-- the dynamic value. Change this one number.
 var DUR = 1800; // fill + count duration (ms)
 var DELAY = 1200; // wait before the animation starts (ms)
 var reveal = document.getElementById('revealStroke');
@@ -118,11 +118,16 @@ requestAnimationFrame(step);
 // Run on load, and again whenever the parent (Ceros) signals the page is shown.
 var pending;
 function schedule(){ clearTimeout(pending); pending = setTimeout(play, DELAY); }
-window.addEventListener('message', function(e){
-if (e && e.data === 'blueprint:replay') { schedule(); }
-});
-schedule();
-})();
+
+ window.addEventListener("message", (event) => {
+    // Optional: validate event.origin for security
+    if (event.data && event.data.type === "LOAD_DATA") {
+      const data = event.data.payload;
+      SCORE = data?.score || 0;
+      schedule();
+    }
+  });
+
 </script>
 </body>
 </html>
