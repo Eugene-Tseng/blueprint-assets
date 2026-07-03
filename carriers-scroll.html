@@ -69,10 +69,10 @@
   function card(c) {
     return `
       <div class="card">
-        <div class="name">${c.name ?? ''}</div>
+        <div class="name">${c.companyName ?? ''}</div>
         <div class="badge">${c.rating ?? ''}</div>
         <div class="ambest">AM Best Rated</div>
-        <div class="fig">${c.usPremium ?? ''}</div>
+        <div class="fig">${c.revenue ?? ''}</div>
         <div class="figlabel">US Industry Premium</div>
         <div class="divider"></div>
         <div class="global">Global Premium: ${c.globalPremium ?? ''}</div>
