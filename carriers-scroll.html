@@ -57,59 +57,57 @@
 <body>
 <div id="scroll"><div id="sizer"><div id="stage"><div id="grid"></div></div></div></div>
 <script>
-(function(){
+(function () {
+  let CARRIERS = [];
 
- var CARRIERS = [];
-  window.addEventListener("message", (event) => {
- // Ensure the message type is correct
- if (event.data && event.data.type === "LOAD_DATA") {
- const data = event.data.payload; // Extract the payload
-CARRIERS = data.page5.cards;
- console.log("Data received via event:", data);
-}
-});
-  // ----------------------------------------------------------------------
+  const TAIL = 174;
+  const grid = document.getElementById('grid');
+  const scroll = document.getElementById('scroll');
+  const stage = document.getElementById('stage');
+  const sizer = document.getElementById('sizer');
 
-  // How much of a row stays visible at the very top when fully scrolled.
-  // 174 = one full card row reaches the top. Increase to let the last row
-  // settle lower; decrease to push it higher.
-  var TAIL = 174;
-
-  var grid  = document.getElementById('grid');
-  var scroll= document.getElementById('scroll');
-  var stage = document.getElementById('stage');
-  var sizer = document.getElementById('sizer');
-
-  function card(c){
-    return '<div class="card">' +
-      '<div class="name">' + c.name + '</div>' +
-      '<div class="badge">' + c.rating + '</div>' +
-      '<div class="ambest">AM Best Rated</div>' +
-      '<div class="fig">' + c.usPremium + '</div>' +
-      '<div class="figlabel">US Industry Premium</div>' +
-      '<div class="divider"></div>' +
-      '<div class="global">Global Premium: ' + c.globalPremium + '</div>' +
-    '</div>';
+  function card(c) {
+    return `
+      <div class="card">
+        <div class="name">${c.name ?? ''}</div>
+        <div class="badge">${c.rating ?? ''}</div>
+        <div class="ambest">AM Best Rated</div>
+        <div class="fig">${c.usPremium ?? ''}</div>
+        <div class="figlabel">US Industry Premium</div>
+        <div class="divider"></div>
+        <div class="global">Global Premium: ${c.globalPremium ?? ''}</div>
+      </div>
+    `;
   }
 
-  function layout(){
-    // stage is 2x; its visible footprint is half its height.
-    var contentH = stage.offsetHeight * 0.5;
-    // Only add scroll runway when the cards actually overflow the window,
-    // so a grid that already fits doesn't scroll into empty space.
-    var overflow = contentH > scroll.clientHeight + 1;
-    var runway = overflow ? Math.max(0, scroll.clientHeight - TAIL) : 0;
+  function layout() {
+    const contentH = stage.offsetHeight * 0.5;
+    const overflow = contentH > scroll.clientHeight + 1;
+    const runway = overflow ? Math.max(0, scroll.clientHeight - TAIL) : 0;
     sizer.style.height = (contentH + runway) + 'px';
   }
 
-  function render(){
-    grid.innerHTML = CARRIERS.map(card).join('');
-    requestAnimationFrame(function(){ grid.classList.add('in'); layout(); });
+  function render() {
+    grid.innerHTML = (CARRIERS || []).map(card).join('');
+    requestAnimationFrame(() => {
+      grid.classList.add('in');
+      layout();
+    });
   }
 
-  render();
+  window.addEventListener("message", (event) => {
+    // Optional: validate event.origin for security
+    if (event.data && event.data.type === "LOAD_DATA") {
+      const data = event.data.payload;
+      CARRIERS = data?.page5?.cards || [];
+      render();
+    }
+  });
+
   window.addEventListener('resize', layout);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(layout);
+  }
 })();
 </script>
 </body>
