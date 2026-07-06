@@ -124,6 +124,7 @@ function schedule(){ clearTimeout(pending); pending = setTimeout(play, DELAY); }
     if (event.data && event.data.type === "LOAD_DATA") {
       const data = event.data.payload;
       SCORE = data?.score || 0;
+     console.log(SCORE);
       schedule();
     }
   });
