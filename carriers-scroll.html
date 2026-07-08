@@ -40,7 +40,21 @@
     background:#fff; border-radius:16px;
     box-shadow:0 2px 4px rgba(16,24,40,.06);   /* remove for the SVG's flat look */
   }
-  .name{ position:absolute; left:32px; top:26px; font-family:var(--slab); font-weight:500; font-size:40px; line-height:1; color:var(--name); }
+  .name{ position:absolute;
+    left:32px;
+    right:136px;              /* reserve space for the badge */
+    top:26px;
+    font-family:var(--slab);
+    font-weight:500;
+    font-size:40px;
+    line-height:1.08;
+    color:var(--name);
+    white-space:normal;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp:2;     /* allow up to 2 lines */
+    -webkit-box-orient:vertical;
+    word-break:break-word; }
   .badge{
     position:absolute; right:32px; top:16px; width:74px; height:64px;
     background:var(--badge-bg); border-radius:8px;
