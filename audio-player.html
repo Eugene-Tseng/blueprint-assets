@@ -17,10 +17,19 @@
     audio.src = 'https://eugene-tseng.github.io/blueprint-assets/' + src;
   }
 
+  // ✅ Autoplay test — triggers on first user gesture if blocked
+  if (params.get('autoplay') === '1') {
+    audio.play().catch(function() {
+      console.log('Autoplay blocked — waiting for user gesture');
+      document.addEventListener('click', function() {
+        audio.play();
+      }, { once: true });
+    });
+  }
+
   window.addEventListener('message', function(e) {
     if (!audio.src) return;
 
-    // Structured message with slide targeting
     if (e.data && typeof e.data === 'object') {
       if (e.data.type === 'blueprint:audio-play' && e.data.slide === slideNum) {
         audio.play();
@@ -37,7 +46,6 @@
       }
     }
 
-    // blueprint:replay always restarts this slide's audio
     if (e.data === 'blueprint:replay') {
       audio.pause();
       audio.currentTime = 0;
