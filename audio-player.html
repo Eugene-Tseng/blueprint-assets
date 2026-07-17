@@ -9,21 +9,40 @@
 <audio id="slide-audio" preload="auto"></audio>
 <script>
   var audio = document.getElementById('slide-audio');
-
-  // Read the ?src= param from the URL and set the audio source
   var params = new URLSearchParams(window.location.search);
   var src = params.get('src');
+  var slideNum = parseInt(params.get('slide'), 10);
+
   if (src) {
     audio.src = 'https://eugene-tseng.github.io/blueprint-assets/' + src;
   }
 
-  // Listen for messages from the Ceros SDK script
   window.addEventListener('message', function(e) {
     if (!audio.src) return;
-    if (e.data === 'blueprint:audio-play')  { audio.play(); }
-    if (e.data === 'blueprint:audio-pause') { audio.pause(); }
-    if (e.data === 'blueprint:audio-stop')  { audio.pause(); audio.currentTime = 0; }
-    if (e.data === 'blueprint:replay')      { audio.pause(); audio.currentTime = 0; audio.play(); }
+
+    // Structured message with slide targeting
+    if (e.data && typeof e.data === 'object') {
+      if (e.data.type === 'blueprint:audio-play' && e.data.slide === slideNum) {
+        audio.play();
+      }
+      if (e.data.type === 'blueprint:audio-stop' && e.data.slide !== slideNum) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+      if (e.data.type === 'blueprint:audio-pause') {
+        audio.pause();
+      }
+      if (e.data.type === 'blueprint:audio-resume') {
+        audio.play();
+      }
+    }
+
+    // blueprint:replay always restarts this slide's audio
+    if (e.data === 'blueprint:replay') {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.play();
+    }
   });
 </script>
 </body>
