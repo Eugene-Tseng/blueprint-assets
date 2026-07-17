@@ -17,35 +17,40 @@
     audio.src = 'https://eugene-tseng.github.io/blueprint-assets/' + src;
   }
 
-  // ✅ Autoplay test — triggers on first user gesture if blocked
-  if (params.get('autoplay') === '1') {
-    audio.play().catch(function() {
-      console.log('Autoplay blocked — waiting for user gesture');
-      document.addEventListener('click', function() {
-        audio.play();
-      }, { once: true });
-    });
-  }
-
   window.addEventListener('message', function(e) {
     if (!audio.src) return;
 
     if (e.data && typeof e.data === 'object') {
+
+      // ✅ Unlock audio on first user gesture
+      if (e.data.type === 'blueprint:audio-unlock') {
+        audio.play().then(function() { audio.pause(); audio.currentTime = 0; }).catch(function(){});
+      }
+
+      // ✅ Play only if this is the right slide
       if (e.data.type === 'blueprint:audio-play' && e.data.slide === slideNum) {
+        audio.currentTime = 0;
         audio.play();
       }
+
+      // ✅ Stop all slides except the current one
       if (e.data.type === 'blueprint:audio-stop' && e.data.slide !== slideNum) {
         audio.pause();
         audio.currentTime = 0;
       }
+
+      // ✅ Pause all slides, hold position
       if (e.data.type === 'blueprint:audio-pause') {
         audio.pause();
       }
+
+      // ✅ Resume current slide
       if (e.data.type === 'blueprint:audio-resume') {
         audio.play();
       }
     }
 
+    // ✅ blueprint:replay restarts this slide's audio
     if (e.data === 'blueprint:replay') {
       audio.pause();
       audio.currentTime = 0;
